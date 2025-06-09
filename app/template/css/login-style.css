@@ -1,0 +1,75 @@
+/* Fundo */
+body {
+    margin: 0;
+    padding: 0;
+    background: url('../../img/bg-facens.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Caixa do login */
+.login-container {
+    background-color: white;
+    width: 400px;
+    margin: 80px auto;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Logo */
+.login-container img {
+    width: 120px;
+    margin-bottom: 20px;
+}
+
+/* Campos */
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    background-color: #f4f4f4;
+    font-size: 15px;
+}
+
+/* Botão padrão preto */
+.login-container button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #333; /* Preto escuro */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+/* Efeito hover com gradiente */
+.login-container button:hover {
+    background: linear-gradient(to right, #00c9ff, #cb00ff);
+}
+
+
+/* Texto abaixo */
+.login-container .footer {
+    margin-top: 30px;
+    font-size: 14px;
+    color: #999;
+}
+
+/* Link "Esqueceu?" */
+.login-container a {
+    color: #888;
+    font-size: 13px;
+    text-decoration: none;
+    float: right;
+    margin-top: -28px;
+    margin-right: 5px;
+}
