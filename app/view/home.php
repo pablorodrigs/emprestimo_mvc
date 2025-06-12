@@ -95,7 +95,7 @@ $maquinas = $controller->listarMaquinas();
         </div>
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a href="home.php" class="nav-link">Empréstimo</a>
+                <a href="emprestimo.php" class="nav-link">Empréstimo</a>
             </li>
             <li class="nav-item">
                 <a href="historico.php" class="nav-link">Histórico</a>

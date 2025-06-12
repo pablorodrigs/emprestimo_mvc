@@ -1,6 +1,7 @@
 <?php
 // Includes e instanciação dos objetos
 require_once __DIR__ . '/../../lib/Database.php';
+// ATENÇÃO: Os arquivos HomeModel e HomeController precisam existir para este código funcionar.
 require_once __DIR__ . '/../model/HomeModel.php';
 require_once __DIR__ . '/../controllers/HomeController.php';
 
@@ -31,30 +32,22 @@ if (!$maquina) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Máquina - Facens</title>
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f0f2f5; margin: 0; }
-        .navbar { background-color: #343a40; color: white; padding: 15px 30px; font-size: 1.2rem; }
-        .container { max-width: 1200px; margin: 30px auto; padding: 20px; }
-        .card { background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 30px; }
-        .card-title { font-size: 1.8rem; margin-top: 0; margin-bottom: 25px; color: #333; }
-        .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px; }
-        .form-group { display: flex; flex-direction: column; }
-        label { margin-bottom: 8px; color: #555; font-weight: bold; }
-        input[type="text"], select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
-        .btn { padding: 12px 20px; border: none; border-radius: 5px; color: white; font-size: 1rem; cursor: pointer; text-decoration: none; display: inline-block; text-align: center; }
-        .btn-success { background-color: #28a745; }
-        a.btn-secondary { background-color: #6c757d; margin-left: 10px; }
-    </style>
+    
+    <link rel="stylesheet" href="/EMPRESTIMO/emprestimo/app/template/css/style.css">
+
 </head>
 <body>
-    <div class="navbar">
-        <span>Facens</span>
-    </div>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <span>Facens - Edição</span>
+        </div>
+    </nav>
 
     <div class="container">
         <div class="card">
             <h2 class="card-title">Editar Máquina (ID: <?= htmlspecialchars($maquina['id']) ?>)</h2>
-            <form action="editar.php" method="POST">
+            
+            <form action="editar.php?id=<?= htmlspecialchars($maquina['id']) ?>" method="POST">
                 <input type="hidden" name="id" value="<?= htmlspecialchars($maquina['id']) ?>">
 
                 <div class="form-grid">

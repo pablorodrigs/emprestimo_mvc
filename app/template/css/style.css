@@ -1,0 +1,257 @@
+/* =================================
+   CSS Geral e Navbar
+   ================================= */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 30px;
+}
+
+.card-title {
+    font-size: 1.8rem;
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.navbar {
+    background-color: #343a40;
+    color: white;
+    padding: 0 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar-nav {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    margin-left: 20px;
+}
+
+.nav-link {
+    color: #f8f9fa;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+    background-color: #495057;
+}
+
+/* =================================
+   Botões e Alertas
+   ================================= */
+.btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-success { background-color: #28a745; }
+.btn-primary { background-color: #007bff; }
+.btn-warning { background-color: #ffc107; color: #212529; }
+.btn-secondary { background-color: #6c757d; }
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+
+/* =================================
+   Tabelas (Empréstimo e Histórico)
+   ================================= */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+
+th, td {
+    padding: 12px 15px;
+    border: 1px solid #dee2e6;
+    text-align: left;
+    white-space: nowrap;
+}
+
+th {
+    background-color: #343a40;
+    color: white;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #f8f9fa;
+}
+
+.actions a {
+    margin-right: 5px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+
+/* Estilos para o Status na tabela */
+.status-disponivel { color: green; font-weight: bold; }
+.status-emprestado { color: #d4a300; font-weight: bold; }
+.status-finalizado {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 15px;
+    color: white;
+    background-color: #28a745; /* Verde */
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+
+/* =================================
+   Página de Detalhes
+   ================================= */
+.machine-header {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    font-size: 0.9rem;
+    color: #555;
+    word-wrap: break-word;
+}
+
+
+/* =================================
+   Página de Devolução
+   ================================= */
+
+.devolucao-container {
+    max-width: 600px;
+    width: 100%;
+}
+
+.auth-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    align-items: flex-end;
+}
+
+.auth-row .form-group {
+    flex: 1;
+}
+
+.auth-row .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.auth-row .btn {
+    padding: 10px 20px;
+    width: 100%;
+    height: 45px; /* Alinha altura com os inputs */
+}
+
+.info-maquina {
+    margin-top: 20px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.info-maquina p {
+    margin: 5px 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.info-maquina .details-grid {
+    display: grid;
+    grid-template-columns: auto 1fr; /* Coluna para label e outra para valor */
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #eee;
+}
+
+.info-maquina .details-grid strong {
+    color: #555;
+}
+
+.info-maquina .details-grid select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+/* =================================
+   Estilos de Formulário em Grade
+   ================================= */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Grade responsiva */
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box; /* Garante que o padding não aumente a largura */
+}
