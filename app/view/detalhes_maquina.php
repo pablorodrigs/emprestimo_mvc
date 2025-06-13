@@ -1,10 +1,12 @@
 <?php
 /**
  * Página para exibir os detalhes e o histórico de uma máquina.
+ * Lógica de banco de dados movida para o DetalhesModel.
  */
 
 require_once __DIR__ . '/../../lib/Database.php';
-session_start(); // Garante que a sessão está ativa
+require_once __DIR__ . '/../model/DetalhesModel.php'; // Incluindo nosso novo Model
+session_start();
 
 // Inicializa variáveis
 $maquina = null;
@@ -16,40 +18,15 @@ if (!$id_maquina) {
     $error_message = "ID da máquina não fornecido.";
 } else {
     try {
-        $pdo = Database::getConnection();
+        // 1. Cria uma instância do Model
+        $detalhesModel = new DetalhesModel();
 
-        // 1. Busca os dados principais da máquina
-        $stmt_maquina = $pdo->prepare("SELECT * FROM maquinas WHERE id = ?");
-        $stmt_maquina->execute([$id_maquina]);
-        $maquina = $stmt_maquina->fetch(PDO::FETCH_ASSOC);
-
+        // 2. Usa o Model para buscar os dados
+        $maquina = $detalhesModel->getMaquinaById($id_maquina);
         if (!$maquina) {
             throw new Exception("Máquina não encontrada.");
         }
-
-        // 2. Busca o histórico de empréstimos e devoluções da máquina
-        $sql_historico = "
-            SELECT 
-                e.nome_completo AS pessoa_que_pegou,
-                e.data_emprestimo,
-                e.data_devolucao_efetiva,
-                e.condicao_devolucao,
-                admin_emprestou.usuario AS quem_emprestou,
-                admin_devolveu.usuario AS quem_recebeu
-            FROM 
-                emprestimos e
-            LEFT JOIN 
-                login admin_emprestou ON e.id_usuario_emprestimo = admin_emprestou.id
-            LEFT JOIN 
-                login admin_devolveu ON e.id_usuario_devolucao = admin_devolveu.id
-            WHERE 
-                e.id_maquina = ?
-            ORDER BY 
-                e.data_emprestimo DESC, e.data_devolucao_efetiva DESC
-        ";
-        $stmt_historico = $pdo->prepare($sql_historico);
-        $stmt_historico->execute([$id_maquina]);
-        $historico = $stmt_historico->fetchAll(PDO::FETCH_ASSOC);
+        $historico = $detalhesModel->getHistoricoByMaquinaId($id_maquina);
 
     } catch (Exception $e) {
         $error_message = $e->getMessage();
@@ -64,7 +41,7 @@ if (!$id_maquina) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes da Máquina - Facens</title>
     
-    <!-- CORREÇÃO: Usando caminho absoluto para o CSS -->
+    <!-- Link para o seu arquivo CSS centralizado -->
     <link rel="stylesheet" href="/EMPRESTIMO/emprestimo/app/template/css/style.css">
 
 </head>
@@ -85,7 +62,7 @@ if (!$id_maquina) {
             <?php if ($error_message): ?>
                 <div style="color: red; padding: 15px; text-align: center;">
                     <strong>Erro:</strong> <?= htmlspecialchars($error_message) ?>
-                    <br><br><a href="emprestimo.php">Voltar para a lista</a>
+                    <br><br><a href="emprestimo.php" class="btn btn-primary">Voltar para a lista</a>
                 </div>
             <?php elseif ($maquina): ?>
                 <div class="machine-header">
@@ -109,6 +86,7 @@ if (!$id_maquina) {
                             </tr>
                         <?php else: ?>
                             <?php foreach ($historico as $evento): ?>
+                                <?php // Se tem data de devolução, mostra o evento de devolução ?>
                                 <?php if ($evento['data_devolucao_efetiva']): ?>
                                 <tr>
                                     <td>Devolvido e conferido por <?= htmlspecialchars($evento['quem_recebeu'] ?? 'N/A') ?>. Condição: <?= htmlspecialchars($evento['condicao_devolucao'] ?? 'N/A') ?>.</td>
@@ -116,6 +94,7 @@ if (!$id_maquina) {
                                 </tr>
                                 <?php endif; ?>
 
+                                <?php // Mostra sempre o evento do empréstimo ?>
                                 <tr>
                                     <td>Emprestado e conferido por <?= htmlspecialchars($evento['quem_emprestou'] ?? 'N/A') ?> para <?= htmlspecialchars($evento['pessoa_que_pegou']) ?>.</td>
                                     <td><?= htmlspecialchars(date('Y-m-d H:i:s', strtotime($evento['data_emprestimo']))) ?></td>

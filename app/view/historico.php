@@ -1,47 +1,19 @@
 <?php
 /**
  * Página para exibir o histórico de todos os empréstimos.
- * A verificação de login foi removida.
+ * Lógica de banco de dados movida para o HistoricoModel.
  */
 
-require_once __DIR__ . '/../../lib/Database.php';
-session_start(); // Mantido para o funcionamento do Logout e outras funcionalidades de sessão.
+// Inclui os arquivos necessários
+require_once __DIR__ . '/../../lib/Database.php';      // Para a conexão
+require_once __DIR__ . '/../model/HistoricoModel.php'; // Inclui o nosso novo Model
+session_start();
 
-// O bloco que verificava se o usuário estava logado foi REMOVIDO daqui.
+// 1. Cria uma instância do Model
+$historicoModel = new HistoricoModel();
 
-// Função para buscar o histórico completo de empréstimos
-function buscarHistoricoCompleto() {
-    try {
-        $pdo = Database::getConnection();
-        // Esta consulta SQL une as tabelas 'emprestimos' e 'maquinas'
-        $sql = "
-            SELECT 
-                m.marca, m.modelo, m.armazenamento, m.memoria, 
-                e.data_emprestimo AS inicio, 
-                e.data_devolucao_efetiva AS fim, 
-                e.status,
-                e.nome_completo AS usuario,
-                e.cpf,
-                e.condicao_devolucao
-            FROM 
-                emprestimos e
-            JOIN 
-                maquinas m ON e.id_maquina = m.id
-            WHERE
-                e.status = 'FINALIZADO'
-            ORDER BY 
-                e.data_devolucao_efetiva DESC
-        ";
-        $stmt = $pdo->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        die("Erro ao buscar o histórico: " . $e->getMessage());
-        return [];
-    }
-}
-
-// Chama a função para obter os dados do histórico
-$historico = buscarHistoricoCompleto();
+// 2. Usa o Model para buscar o histórico
+$historico = $historicoModel->buscarHistoricoCompleto();
 
 ?>
 <!DOCTYPE html>
@@ -51,6 +23,7 @@ $historico = buscarHistoricoCompleto();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Histórico de Empréstimos - Facens</title>
     
+    <!-- Link para o seu arquivo CSS centralizado -->
     <link rel="stylesheet" href="/EMPRESTIMO/emprestimo/app/template/css/style.css">
 
 </head>

@@ -1,37 +1,18 @@
 <?php
 /**
- * Página principal para listar todas as máquinas e seu status de empréstimo.
+ * Página principal para listar todas as máquinas.
+ * A lógica de banco de dados foi movida para o MaquinaModel.
  */
 
-// Inclui o arquivo do banco de dados para a conexão
-require_once __DIR__ . '/../../lib/Database.php';
+// Inclui os arquivos necessários
+require_once __DIR__ . '/../../lib/Database.php';      // Para a conexão
+require_once __DIR__ . '/../model/MaquinaModel.php'; // Inclui o nosso novo Model
 
-// Função para buscar todas as máquinas e o ID do empréstimo ativo, se houver
-function listarMaquinasComStatusEmprestimo() {
-    try {
-        $pdo = Database::getConnection();
-        // A query SQL já está buscando os campos 'memoria' e 'armazenamento', o que é ótimo.
-        $sql = "
-            SELECT 
-                m.id, m.marca, m.modelo, m.memoria, m.armazenamento, m.patrimonio, m.servicetag, m.tipo, m.status, 
-                e.id AS emprestimo_id 
-            FROM 
-                maquinas m
-            LEFT JOIN 
-                emprestimos e ON m.id = e.id_maquina AND e.status = 'ATIVO'
-            ORDER BY 
-                m.id ASC
-        ";
-        $stmt = $pdo->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        die("Erro ao buscar máquinas: " . $e->getMessage());
-        return [];
-    }
-}
+// 1. Cria uma instância do Model
+$maquinaModel = new MaquinaModel();
 
-// Chama a função para obter a lista de máquinas para exibir na tabela
-$maquinas = listarMaquinasComStatusEmprestimo();
+// 2. Usa o Model para buscar as máquinas
+$maquinas = $maquinaModel->listarMaquinasComStatus();
 
 ?>
 <!DOCTYPE html>
@@ -52,7 +33,7 @@ $maquinas = listarMaquinasComStatusEmprestimo();
             <li class="nav-item"><a href="emprestimo.php" class="nav-link">Empréstimo</a></li>
             <li class="nav-item"><a href="historico.php" class="nav-link">Histórico</a></li>
             <li class="nav-item"><a href="home.php" class="nav-link">Cadastrar Máquina</a></li>
-            <li class="nav-item"><a href="default.php?pagina=login&metodo=logout" class="nav-link">Logout</a></li>
+            <li class="nav-item"><a href="logout.php" class="nav-link">Logout</a></li>
         </ul>
     </nav>
 
@@ -63,7 +44,7 @@ $maquinas = listarMaquinasComStatusEmprestimo();
             <?php if (isset($_GET['status']) && $_GET['status'] === 'devolucao_sucesso'): ?>
                 <div class="alert-success">Máquina devolvida com sucesso!</div>
             <?php endif; ?>
-             <?php if (isset($_GET['status']) && $_GET['status'] === 'sucesso'): ?>
+            <?php if (isset($_GET['status']) && $_GET['status'] === 'sucesso'): ?>
                 <div class="alert-success">Empréstimo realizado com sucesso!</div>
             <?php endif; ?>
 
